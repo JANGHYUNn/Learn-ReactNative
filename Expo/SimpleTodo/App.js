@@ -3,6 +3,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import produce from 'immer';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -91,9 +92,15 @@ export default function App() {
   };
 
   const checkTodo = index => {
-    const data = [...lists];
-    data[index] = { ...data[index], done: !data[index].done };
+    // const data = [...lists];
+    // data[index] = { ...data[index], done: !data[index].done };
 
+    // setLists(data);
+    // setAsyncStorage(data, 'modify');
+    const data = produce(lists, draft => {
+      draft[index].done = !lists[index].done;
+    });
+    console.log(data);
     setLists(data);
     setAsyncStorage(data, 'modify');
   };
